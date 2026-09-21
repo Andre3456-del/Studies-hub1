@@ -1,14 +1,19 @@
 {
-  "name": "html-hub",
+  "name": "auth-project",
   "version": "1.0.0",
-  "description": "Host your HTML pages with user login and an admin upload panel",
-  "main": "server.js",
-  "scripts": { "start": "node --disable-warning=ExperimentalWarning server.js", "dev": "node --disable-warning=ExperimentalWarning --env-file=.env server.js" },
-  "engines": { "node": ">=22.13" },
+  "description": "Google OAuth sign-in + email verification + password reset",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "express": "^4.19.2",
-    "multer": "^2.0.0",
-    "nodemailer": "^6.9.16"
+    "googleapis": "^140.0.0",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "bcrypt": "^5.1.1",
+    "nodemailer": "^6.9.14",
+    "express-session": "^1.18.0",
+    "cookie-parser": "^1.4.6"
   }
 }

@@ -1,58 +1,60 @@
-# Studies Hub
+# Auth Project — Google OAuth + Email Verification + Password Reset
 
-Host your HTML pages online. Visitors sign up, verify their email, and log in; you manage everything from `/admin`.
-Needs Node.js 22.13 or newer. No native modules, so it installs anywhere (including a phone).
+## Setup
 
-## Run it (computer)
+1. Extract this zip and run:
+   ```
+   npm install
+   ```
 
-```
-npm install
-ADMIN_PASSWORD='a-long-password' npm start
-```
+2. Copy `.env.example` to `.env`:
+   ```
+   cp .env.example .env
+   ```
 
-Open http://localhost:3000 and log in at `/login` as `donryscott28@gmail.com` with that password.
-(Set `ADMIN_EMAIL` to change the address. The admin password is set on the first start; to reset it, stop the server, delete the `data` folder, and start again.)
+3. Fill in `.env` with your own credentials from the Google Cloud Console
+   (APIs & Services → Credentials). **Never commit `.env` or paste real
+   keys into chat/logs — rotate immediately if one is ever exposed.**
 
-## Run it (Android phone, with Termux)
+   You need:
+   - `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — from an OAuth 2.0 Client ID
+   - `GOOGLE_REFRESH_TOKEN` — generated once via the OAuth consent flow
+     (needed so the server can send email through Gmail API without you
+     re-authenticating every time)
+   - `JWT_SECRET` / `SESSION_SECRET` — any long random strings
 
-1. Install Termux from F-Droid (f-droid.org). The Play Store version is outdated.
-2. In Termux: `termux-setup-storage` (allow access), then `pkg update -y && pkg install -y nodejs unzip`
-3. `unzip ~/storage/downloads/html-hub.zip -d ~ && cd ~/html-hub && npm install`
-4. `termux-wake-lock`, then `ADMIN_PASSWORD='a-long-password' npm start`
-5. Open Chrome on the same phone: http://localhost:3000
+4. Run the server:
+   ```
+   npm start
+   ```
 
-To test signup without email, sign up, then log in as admin and tap "Unverified: verify now" next to that user in `/admin`.
-
-## Email verification
-
-New accounts must click an emailed link before they can log in. The site sends it with the first option that is configured:
-
-1. **Resend** (HTTPS API): `RESEND_API_KEY`, `MAIL_FROM` (e.g. `Studies Hub <hello@yourdomain.com>`). To email visitors you must verify a domain you own in Resend.
-2. **Brevo** (HTTPS API): `BREVO_API_KEY`, `MAIL_FROM` (a sender address you verified in Brevo).
-3. **SMTP** (e.g. Gmail): `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, `SMTP_USER`, `SMTP_PASS` (a Gmail App Password), optional `MAIL_FROM`.
-
-Railway blocks SMTP on Free, Trial and Hobby plans, so use option 1 or 2 there. SMTP is fine on your computer, phone or a VPS.
-With nothing configured, the verification link is printed in the server log instead of emailed, and you can verify users by hand in `/admin`.
-
-## Put it online with Railway (no GitHub needed)
-
-Railway can deploy a folder straight from your computer with its CLI:
+## Structure
 
 ```
-npm i -g @railway/cli
-railway login
-cd html-hub
-railway init
+auth-project/
+├── index.js              # entry point
+├── auth/
+│   └── google.js         # Google OAuth client + user lookup
+├── routes/
+│   └── auth.js            # all auth endpoints
+├── services/
+│   └── email.js           # Gmail-based email sending
+├── .env.example            # template — copy to .env and fill in
+├── .gitignore
+└── package.json
 ```
 
-Then, in the Railway dashboard, open the new service:
+## Endpoints
 
-1. **Variables**: `ADMIN_PASSWORD`, `NODE_ENV=production`, plus your email settings (`RESEND_API_KEY` and `MAIL_FROM`, or the Brevo pair).
-2. **Volume**: add one and mount it at `/data` (keeps accounts and pages between deploys).
-3. **Networking**: click "Generate Domain" to get your public https address.
+- `GET  /auth/google` — start Google sign-in
+- `GET  /auth/google/callback` — OAuth redirect handler
+- `POST /auth/send-verification` — send email verification link
+- `GET  /auth/verify-email` — verify link handler
+- `POST /auth/forgot-password` — send password reset email
+- `POST /auth/reset-password` — apply new password
 
-Back in the terminal run `railway up`. Set the variables and volume before the first deploy.
-To use GitHub instead, push this folder to a repo and pick "Deploy from GitHub repo" in Railway.
+## Still to wire up
 
-Other hosts that run Node (Fly.io, a VPS) also work. Static hosts (GitHub Pages, Netlify, Vercel) do not.
-Uploaded pages run on the same domain as the site, so only upload HTML you trust.
+The DB calls are commented out (`User.findOrCreate`, `User.markVerified`,
+etc.) — plug in your own model/ORM (Mongo, Postgres/Prisma, etc.) where
+marked.
