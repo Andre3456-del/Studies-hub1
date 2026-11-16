@@ -1,3 +1,8 @@
 .env
 node_modules/
 inbox/files/
+batches/*.zip
+out/*.zip
+# Keep uploaded material and drafts out of GitHub while this repo is public. Delete these two lines once the repo is private.
+inbox/*.json
+work/*.json
