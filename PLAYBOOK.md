@@ -4,7 +4,7 @@ Read this first in every new chat. Everything needed to continue is in the folde
 
 ## 0. Start
 - Read `log.md` (last 20 lines) to see where the last session stopped.
-- If the owner attached a batch zip: `node tools/unpack.js <path-to-zip>`. Otherwise carry on with what is already in `inbox/` and `work/`.
+- If the owner attached one or more batch zips (a big batch comes as Part 1 of N, Part 2 of N, ...): `node tools/unpack.js <path-to-zip>` for each. Otherwise carry on with what is already in `inbox/` and `work/`.
 - Tell the owner how many uploads are waiting. Work oldest first.
 
 ## 1. For each item in `inbox/`
@@ -15,7 +15,8 @@ Read this first in every new chat. Everything needed to continue is in the folde
    - **classify**: course code and title, level, topic, kind (`past-question`, `lecture-note`, `test`, `other`).
    - **summary**: 5 to 10 short lines in plain English.
    - **questions**: multiple choice, exactly 4 different options, one correct answer (0 to 3), a one-line explanation. Only questions the material (or, for drafts, well-known course content) can answer. No trick questions, no duplicates. A page with no sensible questions may have an empty list.
-4. Several uploads on one topic may become one draft (list all their ids in `source_ids`).
+4. Very large files (a whole textbook of 50 MB or more): do not try to read it all at once. Work chapter by chapter, write one draft per chapter or topic as you go, and note in `log.md` which pages are done so the next session resumes there. Say plainly if a scan is too poor to read.
+5. Several uploads on one topic may become one draft (list all their ids in `source_ids`).
 
 ## 2. Drafts from an outline (no upload)
 When the owner gives a course, level and topic list, write drafts the same way with `"source": "draft-from-knowledge"` and no `source_ids`. The owner picks the course, department and level on the site. Never copy text from another website or a textbook. Say plainly when unsure of a fact, and leave that question out rather than guess.

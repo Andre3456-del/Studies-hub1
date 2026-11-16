@@ -16,5 +16,5 @@ for (const it of batch.items) {
   n++;
 }
 fs.copyFileSync(f, path.join(L.dir('batches'), path.basename(f)));
-L.log(`unpack: ${n} upload(s) from ${path.basename(f)} (${(batch.skipped || []).length} skipped by the site)`);
+L.log(`unpack: ${n} upload(s) from ${path.basename(f)} (part ${batch.part || 1} of ${batch.parts || 1})`);
 console.log(`${n} upload(s) are in inbox/. Read each one and write work/<id>.json (see docs/FORMATS.md).`);
