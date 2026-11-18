@@ -14,7 +14,7 @@ Read this first in every new chat. Everything needed to continue is in the folde
    - `source_ids`: the upload id(s) the draft is based on. The site uses these to file the result under the same course, level and department as the upload.
    - **classify**: course code and title, level, topic, kind (`past-question`, `lecture-note`, `test`, `other`).
    - **summary**: 5 to 10 short lines in plain English.
-   - **questions**: multiple choice, exactly 4 different options, one correct answer (0 to 3), a one-line explanation. Only questions the material (or, for drafts, well-known course content) can answer. No trick questions, no duplicates. A page with no sensible questions may have an empty list.
+   - **questions**: write MANY per item (aim for 25 to 40, up to 200; more is better). The site joins every lecture of a course into one big bank and each test picks a random 20 to 80 from it, so a thick bank means tests differ every time. Multiple choice, exactly 4 different options, one correct answer (0 to 3), a one-line explanation. Only questions the material (or, for drafts, well-known course content) can answer. No trick questions, no duplicates. A page with no sensible questions may have an empty list.
 4. Very large files (a whole textbook of 50 MB or more): do not try to read it all at once. Work chapter by chapter, write one draft per chapter or topic as you go, and note in `log.md` which pages are done so the next session resumes there. Say plainly if a scan is too poor to read.
 5. Several uploads on one topic may become one draft (list all their ids in `source_ids`).
 
